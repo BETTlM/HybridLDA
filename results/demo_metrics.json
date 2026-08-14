@@ -1,0 +1,392 @@
+{
+  "corpora": {
+    "20newsgroups": {
+      "best_k": 12,
+      "best_alpha": 0.5,
+      "topics": {
+        "corpus": "20newsgroups",
+        "n_docs": 591,
+        "best_k": 12,
+        "best_alpha": 0.5,
+        "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+        "lda_topics": [
+          {
+            "topic_id": 0,
+            "top_words": "max, air, member, device, batf, secure, troop, libertarian, lab, beginning"
+          },
+          {
+            "topic_id": 1,
+            "top_words": "theory, space, satellite, light, science, star, hole, orbit, security, turbo"
+          },
+          {
+            "topic_id": 2,
+            "top_words": "good, nasa, well, get, better, thing, year, think, like, last"
+          },
+          {
+            "topic_id": 3,
+            "top_words": "game, time, year, israeli, back, dog, first, ago, win, another"
+          },
+          {
+            "topic_id": 4,
+            "top_words": "right, government, law, like, people, public, encryption, company, state, fire"
+          },
+          {
+            "topic_id": 5,
+            "top_words": "country, jesus, shall, say, arab, day, man, said, know, heaven"
+          },
+          {
+            "topic_id": 6,
+            "top_words": "gun, car, price, time, death, new, high, make, self, battery"
+          },
+          {
+            "topic_id": 7,
+            "top_words": "god, argument, atheist, example, true, must, many, believe, bible, universe"
+          },
+          {
+            "topic_id": 8,
+            "top_words": "know, conclusion, risk, people, sure, cause, story, book, like, think"
+          },
+          {
+            "topic_id": 9,
+            "top_words": "ftp, disk, mail, email, please, drive, send, correction, file, pub"
+          },
+          {
+            "topic_id": 10,
+            "top_words": "key, widget, value, work, system, get, file, chip, set, type"
+          },
+          {
+            "topic_id": 11,
+            "top_words": "image, format, card, board, program, problem, bit, thing, gif, driver"
+          }
+        ],
+        "hybrid_topics": [
+          {
+            "topic_id": 0,
+            "top_words": "polio, patient, homosexual, syndrome, quack, rein, disease, food, civilian, reaction"
+          },
+          {
+            "topic_id": 1,
+            "top_words": "max, bhj, giz, bxn, qax, nrhj, firearm, right, wwiz, biz"
+          },
+          {
+            "topic_id": 2,
+            "top_words": "pom, game, calgary, dog, coach, vancouver, winnipeg, edmonton, time, baseball"
+          },
+          {
+            "topic_id": 3,
+            "top_words": "nasa, ftp, drive, atheism, disk, file, available, scsi, catalog, directory"
+          },
+          {
+            "topic_id": 4,
+            "top_words": "jesus, arab, greece, greek, turkish, israel, macedonian, country, thrace, jew"
+          },
+          {
+            "topic_id": 5,
+            "top_words": "key, clipper, chip, encryption, security, ieee, algorithm, car, ham, escrow"
+          },
+          {
+            "topic_id": 6,
+            "top_words": "satellite, radar, team, rimsat, year, russian, azerbaijan, sternberg, good, egress"
+          },
+          {
+            "topic_id": 7,
+            "top_words": "larson, physicist, universe, theory, motion, unified, dewey, electron, physical, star"
+          },
+          {
+            "topic_id": 8,
+            "top_words": "god, atheist, fallacy, premise, atheism, bible, jesus, christ, christian, argumentum"
+          },
+          {
+            "topic_id": 9,
+            "top_words": "widget, converter, application, window, resource, visual, file, intrinsics, args, string"
+          },
+          {
+            "topic_id": 10,
+            "top_words": "nejm, gun, risk, homicide, death, suicide, stat, hulk, wolverine, scope"
+          },
+          {
+            "topic_id": 11,
+            "top_words": "gamma, image, window, correction, crt, presentation, linear, font, format, card"
+          }
+        ],
+        "lda_coherence": {
+          "c_v": 0.46160414204899297,
+          "c_npmi": -0.11632137266668756,
+          "u_mass": -4.5676491230419645
+        },
+        "hybrid_coherence": {
+          "c_v": 0.7939331000242759,
+          "c_npmi": -0.008571483856649251,
+          "u_mass": -3.6446525771764176
+        }
+      }
+    },
+    "arxiv": {
+      "best_k": 12,
+      "best_alpha": 0.25,
+      "topics": {
+        "corpus": "arxiv",
+        "n_docs": 600,
+        "best_k": 12,
+        "best_alpha": 0.25,
+        "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+        "lda_topics": [
+          {
+            "topic_id": 0,
+            "top_words": "attention, sequence, representation, transformer, architecture, convolution, task, feature, layer, memory"
+          },
+          {
+            "topic_id": 1,
+            "top_words": "segmentation, network, map, energy, neural, deep, box, uncertainty, physical, building"
+          },
+          {
+            "topic_id": 2,
+            "top_words": "image, network, feature, deep, learning, datasets, high, accuracy, detection, performance"
+          },
+          {
+            "topic_id": 3,
+            "top_words": "learning, policy, reinforcement, series, kernel, agent, online, scale, time, reward"
+          },
+          {
+            "topic_id": 4,
+            "top_words": "algorithm, function, learning, problem, neural, gradient, optimization, network, linear, solution"
+          },
+          {
+            "topic_id": 5,
+            "top_words": "task, language, video, training, human, large, performance, knowledge, pre, fine"
+          },
+          {
+            "topic_id": 6,
+            "top_words": "representation, view, object, scene, learning, pose, camera, novel, existing, time"
+          },
+          {
+            "topic_id": 7,
+            "top_words": "inference, token, parameter, size, error, length, approximate, bound, variable, optimal"
+          },
+          {
+            "topic_id": 8,
+            "top_words": "system, llm, language, question, study, noise, learning, analysis, different, application"
+          },
+          {
+            "topic_id": 9,
+            "top_words": "system, algorithm, coding, network, node, time, power, event, game, influence"
+          },
+          {
+            "topic_id": 10,
+            "top_words": "learning, training, domain, attack, adversarial, group, performance, recognition, machine, network"
+          },
+          {
+            "topic_id": 11,
+            "top_words": "network, graph, problem, task, real, document, explanation, long, translation, edge"
+          }
+        ],
+        "hybrid_topics": [
+          {
+            "topic_id": 0,
+            "top_words": "image, model, resolution, learning, deep, network, iris, registration, imaging, performance"
+          },
+          {
+            "topic_id": 1,
+            "top_words": "learning, task, ilp, charisma, asp, rna, model, solar, system, continual"
+          },
+          {
+            "topic_id": 2,
+            "top_words": "model, barge, series, battery, time, rna, solubility, forecasting, reaction, chemical"
+          },
+          {
+            "topic_id": 3,
+            "top_words": "attack, model, learning, backdoor, training, adversarial, privacy, defense, image, trigger"
+          },
+          {
+            "topic_id": 4,
+            "top_words": "llm, model, language, task, question, knowledge, prompt, reasoning, system, large"
+          },
+          {
+            "topic_id": 5,
+            "top_words": "model, language, word, training, token, task, ctc, performance, domain, english"
+          },
+          {
+            "topic_id": 6,
+            "top_words": "video, model, task, frame, vlms, caption, grounding, language, spatial, visual"
+          },
+          {
+            "topic_id": 7,
+            "top_words": "scene, image, model, video, view, frame, feature, pose, network, object"
+          },
+          {
+            "topic_id": 8,
+            "top_words": "learning, problem, algorithm, bound, function, network, model, reinforcement, optimization, mdp"
+          },
+          {
+            "topic_id": 9,
+            "top_words": "graph, model, network, node, clustering, gne, mnl, subgraphs, explanation, vertex"
+          },
+          {
+            "topic_id": 10,
+            "top_words": "network, neural, model, learning, photonic, training, deep, system, tabu, function"
+          },
+          {
+            "topic_id": 11,
+            "top_words": "nodule, lung, weed, cancer, model, segmentation, crop, network, learning, infection"
+          }
+        ],
+        "lda_coherence": {
+          "c_v": 0.4428084812692756,
+          "c_npmi": -0.03587425549476062,
+          "u_mass": -3.312235481013751
+        },
+        "hybrid_coherence": {
+          "c_v": 0.7216812122726673,
+          "c_npmi": 0.1456091929924809,
+          "u_mass": -1.239359184313637
+        }
+      }
+    }
+  },
+  "metrics_preview": [
+    {
+      "corpus": "20newsgroups",
+      "model": "LDA",
+      "n_topics": 8,
+      "reducer": "none",
+      "alpha": 1.0,
+      "c_v": 0.5120919390067096,
+      "c_npmi": -0.10105008286916675,
+      "u_mass": -5.033803543557808,
+      "silhouette": NaN,
+      "diversity": 0.9125
+    },
+    {
+      "corpus": "20newsgroups",
+      "model": "BERT",
+      "n_topics": 8,
+      "reducer": "umap",
+      "alpha": 0.0,
+      "c_v": 0.576164705137951,
+      "c_npmi": -0.06895108748213519,
+      "u_mass": -5.122592065360793,
+      "silhouette": 0.4308091998100281,
+      "diversity": 1.0
+    },
+    {
+      "corpus": "20newsgroups",
+      "model": "Hybrid-BERT-LDA",
+      "n_topics": 8,
+      "reducer": "umap",
+      "alpha": 0.5,
+      "c_v": 0.5439607216742155,
+      "c_npmi": -0.09060537589639879,
+      "u_mass": -6.189275687222389,
+      "silhouette": 0.5462260246276855,
+      "diversity": 0.9875
+    },
+    {
+      "corpus": "20newsgroups",
+      "model": "LDA",
+      "n_topics": 12,
+      "reducer": "none",
+      "alpha": 1.0,
+      "c_v": 0.46160414204899297,
+      "c_npmi": -0.11632137266668756,
+      "u_mass": -4.5676491230419645,
+      "silhouette": NaN,
+      "diversity": 0.9166666666666666
+    },
+    {
+      "corpus": "20newsgroups",
+      "model": "BERT",
+      "n_topics": 12,
+      "reducer": "umap",
+      "alpha": 0.0,
+      "c_v": 0.7263398540902762,
+      "c_npmi": 0.008503893630294586,
+      "u_mass": -4.061752235540631,
+      "silhouette": 0.43819350004196167,
+      "diversity": 0.9833333333333333
+    },
+    {
+      "corpus": "20newsgroups",
+      "model": "Hybrid-BERT-LDA",
+      "n_topics": 12,
+      "reducer": "umap",
+      "alpha": 0.5,
+      "c_v": 0.7939331000242759,
+      "c_npmi": -0.008571483856649251,
+      "u_mass": -3.6446525771764176,
+      "silhouette": 0.5269944071769714,
+      "diversity": 0.9666666666666667
+    },
+    {
+      "corpus": "arxiv",
+      "model": "LDA",
+      "n_topics": 8,
+      "reducer": "none",
+      "alpha": 1.0,
+      "c_v": 0.4408852424178107,
+      "c_npmi": -0.03954234173838317,
+      "u_mass": -2.593156084244362,
+      "silhouette": NaN,
+      "diversity": 0.825
+    },
+    {
+      "corpus": "arxiv",
+      "model": "BERT",
+      "n_topics": 8,
+      "reducer": "umap",
+      "alpha": 0.0,
+      "c_v": 0.5025273911069995,
+      "c_npmi": -0.007991089173113064,
+      "u_mass": -2.529986737738611,
+      "silhouette": 0.4076344668865204,
+      "diversity": 0.6
+    },
+    {
+      "corpus": "arxiv",
+      "model": "Hybrid-BERT-LDA",
+      "n_topics": 8,
+      "reducer": "umap",
+      "alpha": 0.5,
+      "c_v": 0.5655177529156744,
+      "c_npmi": -0.013355364819096528,
+      "u_mass": -2.604189625733492,
+      "silhouette": 0.479513555765152,
+      "diversity": 0.6125
+    },
+    {
+      "corpus": "arxiv",
+      "model": "LDA",
+      "n_topics": 12,
+      "reducer": "none",
+      "alpha": 1.0,
+      "c_v": 0.4428084812692756,
+      "c_npmi": -0.03587425549476062,
+      "u_mass": -3.312235481013751,
+      "silhouette": NaN,
+      "diversity": 0.7916666666666666
+    },
+    {
+      "corpus": "arxiv",
+      "model": "BERT",
+      "n_topics": 12,
+      "reducer": "umap",
+      "alpha": 0.0,
+      "c_v": 0.5454159128539695,
+      "c_npmi": 0.012152639327814572,
+      "u_mass": -2.7615596940218805,
+      "silhouette": 0.36576056480407715,
+      "diversity": 0.6583333333333333
+    },
+    {
+      "corpus": "arxiv",
+      "model": "Hybrid-BERT-LDA",
+      "n_topics": 12,
+      "reducer": "umap",
+      "alpha": 0.5,
+      "c_v": 0.5714312526353033,
+      "c_npmi": 0.010893383544103285,
+      "u_mass": -2.002186285623328,
+      "silhouette": 0.4461659789085388,
+      "diversity": 0.6583333333333333
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "corpus": "20newsgroups",
+  "n_docs": 591,
+  "best_k": 12,
+  "best_alpha": 0.5,
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "lda_topics": [
+    {
+      "topic_id": 0,
+      "top_words": "max, air, member, device, batf, secure, troop, libertarian, lab, beginning"
+    },
+    {
+      "topic_id": 1,
+      "top_words": "theory, space, satellite, light, science, star, hole, orbit, security, turbo"
+    },
+    {
+      "topic_id": 2,
+      "top_words": "good, nasa, well, get, better, thing, year, think, like, last"
+    },
+    {
+      "topic_id": 3,
+      "top_words": "game, time, year, israeli, back, dog, first, ago, win, another"
+    },
+    {
+      "topic_id": 4,
+      "top_words": "right, government, law, like, people, public, encryption, company, state, fire"
+    },
+    {
+      "topic_id": 5,
+      "top_words": "country, jesus, shall, say, arab, day, man, said, know, heaven"
+    },
+    {
+      "topic_id": 6,
+      "top_words": "gun, car, price, time, death, new, high, make, self, battery"
+    },
+    {
+      "topic_id": 7,
+      "top_words": "god, argument, atheist, example, true, must, many, believe, bible, universe"
+    },
+    {
+      "topic_id": 8,
+      "top_words": "know, conclusion, risk, people, sure, cause, story, book, like, think"
+    },
+    {
+      "topic_id": 9,
+      "top_words": "ftp, disk, mail, email, please, drive, send, correction, file, pub"
+    },
+    {
+      "topic_id": 10,
+      "top_words": "key, widget, value, work, system, get, file, chip, set, type"
+    },
+    {
+      "topic_id": 11,
+      "top_words": "image, format, card, board, program, problem, bit, thing, gif, driver"
+    }
+  ],
+  "hybrid_topics": [
+    {
+      "topic_id": 0,
+      "top_words": "polio, patient, homosexual, syndrome, quack, rein, disease, food, civilian, reaction"
+    },
+    {
+      "topic_id": 1,
+      "top_words": "max, bhj, giz, bxn, qax, nrhj, firearm, right, wwiz, biz"
+    },
+    {
+      "topic_id": 2,
+      "top_words": "pom, game, calgary, dog, coach, vancouver, winnipeg, edmonton, time, baseball"
+    },
+    {
+      "topic_id": 3,
+      "top_words": "nasa, ftp, drive, atheism, disk, file, available, scsi, catalog, directory"
+    },
+    {
+      "topic_id": 4,
+      "top_words": "jesus, arab, greece, greek, turkish, israel, macedonian, country, thrace, jew"
+    },
+    {
+      "topic_id": 5,
+      "top_words": "key, clipper, chip, encryption, security, ieee, algorithm, car, ham, escrow"
+    },
+    {
+      "topic_id": 6,
+      "top_words": "satellite, radar, team, rimsat, year, russian, azerbaijan, sternberg, good, egress"
+    },
+    {
+      "topic_id": 7,
+      "top_words": "larson, physicist, universe, theory, motion, unified, dewey, electron, physical, star"
+    },
+    {
+      "topic_id": 8,
+      "top_words": "god, atheist, fallacy, premise, atheism, bible, jesus, christ, christian, argumentum"
+    },
+    {
+      "topic_id": 9,
+      "top_words": "widget, converter, application, window, resource, visual, file, intrinsics, args, string"
+    },
+    {
+      "topic_id": 10,
+      "top_words": "nejm, gun, risk, homicide, death, suicide, stat, hulk, wolverine, scope"
+    },
+    {
+      "topic_id": 11,
+      "top_words": "gamma, image, window, correction, crt, presentation, linear, font, format, card"
+    }
+  ],
+  "lda_coherence": {
+    "c_v": 0.46160414204899297,
+    "c_npmi": -0.11632137266668756,
+    "u_mass": -4.5676491230419645
+  },
+  "hybrid_coherence": {
+    "c_v": 0.7939331000242759,
+    "c_npmi": -0.008571483856649251,
+    "u_mass": -3.6446525771764176
+  }
+}

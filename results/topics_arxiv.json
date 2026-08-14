@@ -1,0 +1,117 @@
+{
+  "corpus": "arxiv",
+  "n_docs": 600,
+  "best_k": 12,
+  "best_alpha": 0.25,
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "lda_topics": [
+    {
+      "topic_id": 0,
+      "top_words": "attention, sequence, representation, transformer, architecture, convolution, task, feature, layer, memory"
+    },
+    {
+      "topic_id": 1,
+      "top_words": "segmentation, network, map, energy, neural, deep, box, uncertainty, physical, building"
+    },
+    {
+      "topic_id": 2,
+      "top_words": "image, network, feature, deep, learning, datasets, high, accuracy, detection, performance"
+    },
+    {
+      "topic_id": 3,
+      "top_words": "learning, policy, reinforcement, series, kernel, agent, online, scale, time, reward"
+    },
+    {
+      "topic_id": 4,
+      "top_words": "algorithm, function, learning, problem, neural, gradient, optimization, network, linear, solution"
+    },
+    {
+      "topic_id": 5,
+      "top_words": "task, language, video, training, human, large, performance, knowledge, pre, fine"
+    },
+    {
+      "topic_id": 6,
+      "top_words": "representation, view, object, scene, learning, pose, camera, novel, existing, time"
+    },
+    {
+      "topic_id": 7,
+      "top_words": "inference, token, parameter, size, error, length, approximate, bound, variable, optimal"
+    },
+    {
+      "topic_id": 8,
+      "top_words": "system, llm, language, question, study, noise, learning, analysis, different, application"
+    },
+    {
+      "topic_id": 9,
+      "top_words": "system, algorithm, coding, network, node, time, power, event, game, influence"
+    },
+    {
+      "topic_id": 10,
+      "top_words": "learning, training, domain, attack, adversarial, group, performance, recognition, machine, network"
+    },
+    {
+      "topic_id": 11,
+      "top_words": "network, graph, problem, task, real, document, explanation, long, translation, edge"
+    }
+  ],
+  "hybrid_topics": [
+    {
+      "topic_id": 0,
+      "top_words": "image, model, resolution, learning, deep, network, iris, registration, imaging, performance"
+    },
+    {
+      "topic_id": 1,
+      "top_words": "learning, task, ilp, charisma, asp, rna, model, solar, system, continual"
+    },
+    {
+      "topic_id": 2,
+      "top_words": "model, barge, series, battery, time, rna, solubility, forecasting, reaction, chemical"
+    },
+    {
+      "topic_id": 3,
+      "top_words": "attack, model, learning, backdoor, training, adversarial, privacy, defense, image, trigger"
+    },
+    {
+      "topic_id": 4,
+      "top_words": "llm, model, language, task, question, knowledge, prompt, reasoning, system, large"
+    },
+    {
+      "topic_id": 5,
+      "top_words": "model, language, word, training, token, task, ctc, performance, domain, english"
+    },
+    {
+      "topic_id": 6,
+      "top_words": "video, model, task, frame, vlms, caption, grounding, language, spatial, visual"
+    },
+    {
+      "topic_id": 7,
+      "top_words": "scene, image, model, video, view, frame, feature, pose, network, object"
+    },
+    {
+      "topic_id": 8,
+      "top_words": "learning, problem, algorithm, bound, function, network, model, reinforcement, optimization, mdp"
+    },
+    {
+      "topic_id": 9,
+      "top_words": "graph, model, network, node, clustering, gne, mnl, subgraphs, explanation, vertex"
+    },
+    {
+      "topic_id": 10,
+      "top_words": "network, neural, model, learning, photonic, training, deep, system, tabu, function"
+    },
+    {
+      "topic_id": 11,
+      "top_words": "nodule, lung, weed, cancer, model, segmentation, crop, network, learning, infection"
+    }
+  ],
+  "lda_coherence": {
+    "c_v": 0.4428084812692756,
+    "c_npmi": -0.03587425549476062,
+    "u_mass": -3.312235481013751
+  },
+  "hybrid_coherence": {
+    "c_v": 0.7216812122726673,
+    "c_npmi": 0.1456091929924809,
+    "u_mass": -1.239359184313637
+  }
+}
