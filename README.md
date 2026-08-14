@@ -18,13 +18,24 @@ Augment LDA with Sentence-BERT embeddings, then **quantitatively compare topic c
 
 ## Setup
 
+One script installs a local `.venv`, Python packages, and NLTK data.
+
+**macOS / Linux**
+
 ```bash
-cd /Users/bettim/Documents/Kaushik
-python3 -m venv .venv
+chmod +x setup.sh
+./setup.sh
 source .venv/bin/activate
-pip install -r requirements.txt
-python -c "import nltk; nltk.download('punkt'); nltk.download('punkt_tab'); nltk.download('stopwords'); nltk.download('wordnet'); nltk.download('omw-1.4')"
 ```
+
+**Windows** (Command Prompt or double-click)
+
+```bat
+setup.bat
+.venv\Scripts\activate
+```
+
+After that, the same commands work on every OS.
 
 ## Run the experiment
 
