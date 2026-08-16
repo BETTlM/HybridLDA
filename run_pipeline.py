@@ -37,6 +37,11 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--embedding-model", type=str, default=EMBEDDING_MODEL)
     parser.add_argument("--full", action="store_true", help="Use 8k docs and K=5..30")
+    parser.add_argument(
+        "--smoke",
+        action="store_true",
+        help="Tiny local run (20 Newsgroups, 150 docs, K=8) to verify the install",
+    )
     parser.add_argument("--log-level", type=str, default="INFO")
     return parser.parse_args()
 
@@ -48,9 +53,27 @@ def main() -> None:
         format="%(asctime)s %(levelname)s %(name)s: %(message)s",
     )
     configure_warnings()
-    n_docs = FULL_N_DOCS if args.full else args.n_docs
-    k_grid = FULL_K_GRID if args.full else tuple(int(x) for x in args.k.split(",") if x.strip())
-    corpora = tuple(c.strip() for c in args.corpora.split(",") if c.strip())
+    if args.smoke:
+        n_docs = 150
+        k_grid = (8,)
+        corpora = ("20newsgroups",)
+        from src import config as cfg
+        from src import pipeline as pipe
+        from src import visualize as vis
+
+        smoke_root = cfg.PROJECT_ROOT / "results" / "smoke"
+        smoke_fig = smoke_root / "figures"
+        smoke_root.mkdir(parents=True, exist_ok=True)
+        smoke_fig.mkdir(parents=True, exist_ok=True)
+        cfg.RESULTS_DIR = smoke_root
+        cfg.FIGURES_DIR = smoke_fig
+        pipe.RESULTS_DIR = smoke_root
+        pipe.FIGURES_DIR = smoke_fig
+        vis.FIGURES_DIR = smoke_fig
+    else:
+        n_docs = FULL_N_DOCS if args.full else args.n_docs
+        k_grid = FULL_K_GRID if args.full else tuple(int(x) for x in args.k.split(",") if x.strip())
+        corpora = tuple(c.strip() for c in args.corpora.split(",") if c.strip())
     run_experiments(
         corpora=corpora,
         n_docs=n_docs,

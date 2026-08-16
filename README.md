@@ -18,11 +18,14 @@ Augment LDA with Sentence-BERT embeddings, then **quantitatively compare topic c
 
 ## Setup
 
-One script installs a local `.venv`, Python packages, and NLTK data.
+Needs **Python 3.9–3.12**. Homebrew’s current `python3` is often **3.14**, which cannot install this stack (NumPy has no wheel, pip tries to compile, and that fails). Do not run `pip install -r requirements.txt` inside a 3.14 conda env.
 
 **macOS / Linux**
 
 ```bash
+# if `python3 --version` is 3.13 or 3.14:
+brew install python@3.12
+conda deactivate   # if a conda env is active
 chmod +x setup.sh
 ./setup.sh
 source .venv/bin/activate
@@ -36,6 +39,12 @@ setup.bat
 ```
 
 After that, the same commands work on every OS.
+
+```bash
+python run_pipeline.py --smoke
+```
+
+That is a small 20 Newsgroups run (150 documents, K=8) that checks the install. Output goes to `results/smoke/` so the main experiment files are left alone.
 
 ## Run the experiment
 

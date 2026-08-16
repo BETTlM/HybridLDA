@@ -36,7 +36,6 @@ def _ensure_nltk() -> None:
         ("corpora/stopwords", "stopwords"),
         ("corpora/wordnet", "wordnet"),
         ("corpora/omw-1.4", "omw-1.4"),
-        ("corpora/averaged_perceptron_tagger", "averaged_perceptron_tagger"),
     )
     for path, name in resources:
         try:

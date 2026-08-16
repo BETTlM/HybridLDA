@@ -1,117 +1,117 @@
 {
   "corpus": "20newsgroups",
-  "n_docs": 591,
+  "n_docs": 1963,
   "best_k": 12,
   "best_alpha": 0.5,
   "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
   "lda_topics": [
     {
       "topic_id": 0,
-      "top_words": "max, air, member, device, batf, secure, troop, libertarian, lab, beginning"
+      "top_words": "game, player, win, fan, electrical, run, cover, play, red, lead"
     },
     {
       "topic_id": 1,
-      "top_words": "theory, space, satellite, light, science, star, hole, orbit, security, turbo"
+      "top_words": "get, like, know, time, good, think, back, really, year, much"
     },
     {
       "topic_id": 2,
-      "top_words": "good, nasa, well, get, better, thing, year, think, like, last"
+      "top_words": "scsi, application, window, bos, type, resource, set, error, widget, file"
     },
     {
       "topic_id": 3,
-      "top_words": "game, time, year, israeli, back, dog, first, ago, win, another"
+      "top_words": "people, think, even, many, pain, said, team, fact, post, time"
     },
     {
       "topic_id": 4,
-      "top_words": "right, government, law, like, people, public, encryption, company, state, fire"
+      "top_words": "max, dale, nissan, air, lately, compuserve, nixon, acid, avg, edit"
     },
     {
       "topic_id": 5,
-      "top_words": "country, jesus, shall, say, arab, day, man, said, know, heaven"
+      "top_words": "wire, bit, key, system, drive, work, cable, need, run, problem"
     },
     {
       "topic_id": 6,
-      "top_words": "gun, car, price, time, death, new, high, make, self, battery"
+      "top_words": "armenian, government, muslim, state, israel, right, house, security, american, encryption"
     },
     {
       "topic_id": 7,
-      "top_words": "god, argument, atheist, example, true, must, many, believe, bible, universe"
+      "top_words": "image, file, system, available, ftp, package, version, source, user, mail"
     },
     {
       "topic_id": 8,
-      "top_words": "know, conclusion, risk, people, sure, cause, story, book, like, think"
+      "top_words": "jesus, law, church, god, say, said, word, state, case, child"
     },
     {
       "topic_id": 9,
-      "top_words": "ftp, disk, mail, email, please, drive, send, correction, file, pub"
+      "top_words": "god, question, people, christian, must, many, example, make, believe, argument"
     },
     {
       "topic_id": 10,
-      "top_words": "key, widget, value, work, system, get, file, chip, set, type"
+      "top_words": "pit, det, space, nasa, university, first, team, orbit, van, national"
     },
     {
       "topic_id": 11,
-      "top_words": "image, format, card, board, program, problem, bit, thing, gif, driver"
+      "top_words": "wiring, circuit, ground, gun, subject, outlet, power, neutral, right, home"
     }
   ],
   "hybrid_topics": [
     {
       "topic_id": 0,
-      "top_words": "polio, patient, homosexual, syndrome, quack, rein, disease, food, civilian, reaction"
+      "top_words": "widget, image, ftp, file, window, system, application, package, available, cosy"
     },
     {
       "topic_id": 1,
-      "top_words": "max, bhj, giz, bxn, qax, nrhj, firearm, right, wwiz, biz"
+      "top_words": "god, jesus, atheism, atheist, church, bible, people, religion, christian, christ"
     },
     {
       "topic_id": 2,
-      "top_words": "pom, game, calgary, dog, coach, vancouver, winnipeg, edmonton, time, baseball"
+      "top_words": "max, bhj, giz, bxn, qax, car, nrhj, tire, brake, oil"
     },
     {
       "topic_id": 3,
-      "top_words": "nasa, ftp, drive, atheism, disk, file, available, scsi, catalog, directory"
+      "top_words": "team, game, det, cub, pit, pitcher, year, player, chi, hockey"
     },
     {
       "topic_id": 4,
-      "top_words": "jesus, arab, greece, greek, turkish, israel, macedonian, country, thrace, jew"
+      "top_words": "gun, firearm, right, people, fbi, law, like, atf, koresh, state"
     },
     {
       "topic_id": 5,
-      "top_words": "key, clipper, chip, encryption, security, ieee, algorithm, car, ham, escrow"
+      "top_words": "scsi, font, drive, mhz, card, ram, screen, disk, motherboard, window"
     },
     {
       "topic_id": 6,
-      "top_words": "satellite, radar, team, rimsat, year, russian, azerbaijan, sternberg, good, egress"
+      "top_words": "launch, orbit, lunar, probe, satellite, mission, space, solar, moon, mariner"
     },
     {
       "topic_id": 7,
-      "top_words": "larson, physicist, universe, theory, motion, unified, dewey, electron, physical, star"
+      "top_words": "patient, diet, cancer, polio, pain, food, day, lyme, insurance, doctor"
     },
     {
       "topic_id": 8,
-      "top_words": "god, atheist, fallacy, premise, atheism, bible, jesus, christ, christian, argumentum"
+      "top_words": "encryption, key, escrow, chip, clipper, nsa, enforcement, privacy, government, wiretap"
     },
     {
       "topic_id": 9,
-      "top_words": "widget, converter, application, window, resource, visual, file, intrinsics, args, string"
+      "top_words": "armenian, muslim, israel, israeli, arab, turkish, jew, turk, armenia, greek"
     },
     {
       "topic_id": 10,
-      "top_words": "nejm, gun, risk, homicide, death, suicide, stat, hulk, wolverine, scope"
+      "top_words": "wire, wiring, outlet, circuit, gfci, amp, cec, nec, insulation, grounding"
     },
     {
       "topic_id": 11,
-      "top_words": "gamma, image, window, correction, crt, presentation, linear, font, format, card"
+      "top_words": "bike, rider, ride, dog, get, like, riding, mph, helmet, motorcycle"
     }
   ],
   "lda_coherence": {
-    "c_v": 0.46160414204899297,
-    "c_npmi": -0.11632137266668756,
-    "u_mass": -4.5676491230419645
+    "c_v": 0.5123876349764482,
+    "c_npmi": -0.043843324134544635,
+    "u_mass": -3.7790036366185795
   },
   "hybrid_coherence": {
-    "c_v": 0.7939331000242759,
-    "c_npmi": -0.008571483856649251,
-    "u_mass": -3.6446525771764176
+    "c_v": 0.7279101763995804,
+    "c_npmi": 0.0738277637293409,
+    "u_mass": -2.585907829795145
   }
 }

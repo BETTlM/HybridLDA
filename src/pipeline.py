@@ -7,7 +7,6 @@ import logging
 
 import numpy as np
 import pandas as pd
-from gensim.corpora import Dictionary
 
 from src.config import (
     ALPHA_GRID,
@@ -23,7 +22,7 @@ from src.data import load_corpus
 from src.embeddings import encode_documents
 from src.evaluate import clustering_silhouette, summarize_topics, topic_coherence, topic_diversity
 from src.hybrid import build_hybrid_matrix, fit_cluster_topics, reduce_dimensions
-from src.lda_baseline import fit_lda
+from src.lda_baseline import build_dictionary, fit_lda
 from src.preprocess import preprocess_frame
 from src.temporal import topic_prevalence_by_year
 from src.visualize import (
@@ -66,8 +65,7 @@ def run_corpus(
     raw = load_corpus(corpus, n_docs=n_docs, seed=seed)
     df = preprocess_frame(raw)
     texts = df["tokens"].tolist()
-    dictionary = Dictionary(texts)
-    dictionary.filter_extremes(no_below=5, no_above=0.5, keep_n=20000)
+    dictionary = build_dictionary(texts)
 
     embeddings = encode_documents(
         df["text"].fillna("").tolist(),

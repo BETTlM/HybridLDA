@@ -56,15 +56,18 @@ def reduce_dimensions(
 
         n_comp = n_components or UMAP_COMPONENTS
         n_neighbors = min(UMAP_N_NEIGHBORS, max(2, n - 1))
-        reducer = umap.UMAP(
+        kwargs = dict(
             n_components=n_comp,
             n_neighbors=n_neighbors,
             min_dist=0.1,
             metric="cosine",
             random_state=seed,
-            n_jobs=1,
             verbose=False,
         )
+        try:
+            reducer = umap.UMAP(n_jobs=1, **kwargs)
+        except TypeError:
+            reducer = umap.UMAP(**kwargs)
         return reducer.fit_transform(matrix)
     if method == "pca":
         n_comp = min(n_components or PCA_COMPONENTS, matrix.shape[1], n - 1)

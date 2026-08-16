@@ -33,6 +33,10 @@ class LDAResult:
 def build_dictionary(texts: list[list[str]], min_df: int = MIN_DF, max_df: float = MAX_DF) -> Dictionary:
     dictionary = Dictionary(texts)
     dictionary.filter_extremes(no_below=min_df, no_above=max_df, keep_n=20000)
+    # Small smoke runs can wipe the vocab; relax the floor rather than crash LDA.
+    if len(dictionary) < 30:
+        dictionary = Dictionary(texts)
+        dictionary.filter_extremes(no_below=min(2, min_df), no_above=max_df, keep_n=20000)
     dictionary.compactify()
     return dictionary
 
