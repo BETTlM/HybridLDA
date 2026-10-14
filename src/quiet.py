@@ -17,11 +17,11 @@ _CACHE = _ROOT / "data" / "cache"
 
 
 def _require_supported_python() -> None:
-    if (3, 9) <= sys.version_info[:2] <= (3, 12):
+    if (3, 9) <= sys.version_info[:2] <= (3, 15):
         return
     ver = ".".join(map(str, sys.version_info[:3]))
     raise SystemExit(
-        f"This project needs Python 3.9–3.12 (you have {ver}).\n"
+        f"This project needs Python 3.9–3.15 (you have {ver}).\n"
         "Recreate the venv with ./setup.sh (Windows: setup.bat).\n"
     )
 

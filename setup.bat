@@ -1,7 +1,7 @@
 @echo off
 REM =============================================================================
 REM setup.bat — Create .venv, install deps, download NLTK data (Windows)
-REM Requires Python 3.9–3.12 (3.13/3.14 cannot install this stack from wheels).
+REM Supports Python 3.9–3.15.
 REM
 REM Usage:
 REM   setup.bat
@@ -20,12 +20,12 @@ if not exist "%CD%\requirements.txt" (
   exit /b 1
 )
 
-REM ---- Pick a supported Python (3.9–3.12) ------------------------------------
+REM ---- Pick a supported Python (3.9–3.15) ------------------------------------
 set "PY="
 
 where py >nul 2>&1
 if %ERRORLEVEL%==0 (
-  for %%V in (3.12 3.11 3.10 3.9) do (
+  for %%V in (3.15 3.14 3.13 3.12 3.11 3.10 3.9) do (
     if "!PY!"=="" (
       py -%%V -c "import sys" >nul 2>&1
       if !ERRORLEVEL!==0 set "PY=py -%%V"
@@ -36,17 +36,16 @@ if %ERRORLEVEL%==0 (
 if "!PY!"=="" (
   where python >nul 2>&1
   if !ERRORLEVEL!==0 (
-    python -c "import sys; raise SystemExit(0 if (3, 9) <= sys.version_info[:2] <= (3, 12) else 1)" >nul 2>&1
+    python -c "import sys; raise SystemExit(0 if (3, 9) <= sys.version_info[:2] <= (3, 15) else 1)" >nul 2>&1
     if !ERRORLEVEL!==0 set "PY=python"
   )
 )
 
-if not defined PY (
+if "!PY!"=="" (
   echo.
-  echo Python 3.9-3.12 is required.
-  echo Python 3.13/3.14 cannot install NumPy/Numba/UMAP from wheels.
+  echo Python 3.9-3.15 is required.
   echo.
-  echo Install 3.12 from https://www.python.org/downloads/
+  echo Install from https://www.python.org/downloads/
   echo Tick "Add python.exe to PATH" during setup, then re-run setup.bat
   echo.
   exit /b 1
@@ -63,7 +62,7 @@ if errorlevel 1 exit /b 1
 
 REM ---- Recreate .venv if it is the wrong Python version ----------------------
 if exist ".venv\Scripts\python.exe" (
-  ".venv\Scripts\python.exe" -c "import sys; raise SystemExit(0 if (3, 9) <= sys.version_info[:2] <= (3, 12) else 1)" >nul 2>&1
+  ".venv\Scripts\python.exe" -c "import sys; raise SystemExit(0 if (3, 9) <= sys.version_info[:2] <= (3, 15) else 1)" >nul 2>&1
   if errorlevel 1 (
     echo Existing .venv uses unsupported Python. Recreating...
     rmdir /s /q .venv
@@ -107,13 +106,25 @@ echo Upgrading pip / setuptools / wheel ...
 "%VENV_PY%" -m pip install --upgrade pip setuptools wheel
 if errorlevel 1 exit /b 1
 
+REM PyTorch cp315 wheels are on download.pytorch.org, not PyPI.
+for /f "delims=" %%M in ('"%VENV_PY%" -c "import sys; print(sys.version_info.minor)"') do set "PY_MINOR=%%M"
+if !PY_MINOR! GEQ 15 (
+  echo.
+  echo Python 3.!PY_MINOR!: installing torch from download.pytorch.org ...
+  "%VENV_PY%" -m pip install --prefer-binary "torch>=2.2.0,<3" --index-url https://download.pytorch.org/whl/cpu
+  if errorlevel 1 (
+    echo torch install from download.pytorch.org failed.
+    exit /b 1
+  )
+)
+
 echo.
 echo Installing packages from requirements.txt ...
 "%VENV_PY%" -m pip install --prefer-binary -r "%CD%\requirements.txt"
 if errorlevel 1 (
   echo.
   echo pip install failed. Common fixes:
-  echo   - Use Python 3.9-3.12 only
+  echo   - Use Python 3.9-3.15
   echo   - Check network / proxy settings
   echo   - Delete .venv and re-run setup.bat
   exit /b 1

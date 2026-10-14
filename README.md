@@ -35,13 +35,11 @@ Augment LDA with Sentence-BERT embeddings, then **quantitatively compare topic c
 
 ## Setup
 
-Needs **Python 3.9–3.12**. Homebrew's current `python3` is often **3.14**, which cannot install this stack (NumPy has no wheel, pip tries to compile, and that fails). Do not run `pip install -r requirements.txt` inside a 3.14 conda env.
+Needs **Python 3.9–3.15**. Prefer `./setup.sh` or `setup.bat` over a bare `pip install` — on 3.15 they pull PyTorch from `download.pytorch.org` (those wheels are not on PyPI).
 
 **macOS / Linux**
 
 ```bash
-# if `python3 --version` is 3.13 or 3.14:
-brew install python@3.12
 conda deactivate   # if a conda env is active
 chmod +x setup.sh
 ./setup.sh
@@ -52,7 +50,7 @@ source .venv/bin/activate
 
 ```bat
 setup.bat
-.venv\Scripts\activate
+run.bat --smoke
 ```
 
 After that, the same commands work on every OS.

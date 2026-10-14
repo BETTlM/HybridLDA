@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Create a local virtualenv and install dependencies (macOS / Linux).
-# Requires Python 3.9–3.12. Homebrew's current `python3` is often 3.14 and will fail.
+# Supports Python 3.9–3.15.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
@@ -9,17 +9,23 @@ cd "$ROOT"
 pick_python() {
   local cand
   local -a candidates=(
-    python3.12 python3.11 python3.10 python3.9
+    python3.15 python3.14 python3.13 python3.12 python3.11 python3.10 python3.9
+    /opt/homebrew/opt/python@3.15/bin/python3.15
+    /opt/homebrew/opt/python@3.14/bin/python3.14
+    /opt/homebrew/opt/python@3.13/bin/python3.13
     /opt/homebrew/opt/python@3.12/bin/python3.12
     /opt/homebrew/opt/python@3.11/bin/python3.11
     /opt/homebrew/opt/python@3.10/bin/python3.10
+    /usr/local/opt/python@3.15/bin/python3.15
+    /usr/local/opt/python@3.14/bin/python3.14
+    /usr/local/opt/python@3.13/bin/python3.13
     /usr/local/opt/python@3.12/bin/python3.12
     /usr/local/opt/python@3.11/bin/python3.11
     python3 python
   )
   for cand in "${candidates[@]}"; do
     if command -v "$cand" >/dev/null 2>&1 || [ -x "$cand" ]; then
-      if "$cand" -c 'import sys; raise SystemExit(0 if (3, 9) <= sys.version_info[:2] <= (3, 12) else 1)' 2>/dev/null; then
+      if "$cand" -c 'import sys; raise SystemExit(0 if (3, 9) <= sys.version_info[:2] <= (3, 15) else 1)' 2>/dev/null; then
         echo "$cand"
         return 0
       fi
@@ -29,16 +35,16 @@ pick_python() {
 }
 
 if ! PY="$(pick_python)"; then
-  echo "Python 3.9–3.12 is required. Homebrew python3 is often 3.14, which cannot install this stack." >&2
-  echo "On macOS:  brew install python@3.12 && ./setup.sh" >&2
-  echo "Or install 3.12 from https://www.python.org/downloads/" >&2
+  echo "Python 3.9–3.15 is required." >&2
+  echo "On macOS:  brew install python@3.15   # or python@3.12" >&2
+  echo "Or install from https://www.python.org/downloads/" >&2
   exit 1
 fi
 
 echo "Using $($PY -c 'import sys; print(sys.executable)') ($($PY -c 'import sys; print(".".join(map(str, sys.version_info[:3])))'))"
 
 if [ -x "$ROOT/.venv/bin/python" ]; then
-  if ! "$ROOT/.venv/bin/python" -c 'import sys; raise SystemExit(0 if (3, 9) <= sys.version_info[:2] <= (3, 12) else 1)' 2>/dev/null; then
+  if ! "$ROOT/.venv/bin/python" -c 'import sys; raise SystemExit(0 if (3, 9) <= sys.version_info[:2] <= (3, 15) else 1)' 2>/dev/null; then
     echo "Existing .venv is $($ROOT/.venv/bin/python -c 'import sys; print(".".join(map(str, sys.version_info[:3])))' 2>/dev/null || echo unknown) — recreating with a supported Python."
     rm -rf "$ROOT/.venv"
   fi
@@ -53,10 +59,23 @@ VENV_PY="$ROOT/.venv/bin/python"
 export NLTK_DATA="$ROOT/data/nltk_data"
 export NUMBA_CACHE_DIR="$ROOT/data/cache/numba"
 export MPLCONFIGDIR="$ROOT/data/cache/matplotlib"
-mkdir -p "$NLTK_DATA" "$NUMBA_CACHE_DIR" "$MPLCONFIGDIR"
+export HF_HOME="$ROOT/data/cache/huggingface"
+export TRANSFORMERS_CACHE="$ROOT/data/cache/huggingface/transformers"
+export TOKENIZERS_PARALLELISM=false
+mkdir -p "$NLTK_DATA" "$NUMBA_CACHE_DIR" "$MPLCONFIGDIR" "$HF_HOME" "$ROOT/results/figures"
+
+echo "Upgrading pip / setuptools / wheel ..."
+"$VENV_PY" -m pip install --upgrade pip setuptools wheel
+
+# PyTorch cp315 wheels are on download.pytorch.org, not PyPI.
+PY_MINOR="$("$VENV_PY" -c 'import sys; print(sys.version_info.minor)')"
+if [ "$PY_MINOR" -ge 15 ]; then
+  echo "Python 3.${PY_MINOR}: installing torch from download.pytorch.org ..."
+  "$VENV_PY" -m pip install --prefer-binary "torch>=2.2.0,<3" \
+    --index-url https://download.pytorch.org/whl/cpu
+fi
 
 echo "Installing packages from requirements.txt ..."
-"$VENV_PY" -m pip install --upgrade pip setuptools wheel
 "$VENV_PY" -m pip install --prefer-binary -r "$ROOT/requirements.txt"
 
 echo "Downloading NLTK data ..."
@@ -85,12 +104,14 @@ import torch
 from sentence_transformers import SentenceTransformer
 import umap
 import matplotlib
+import streamlit
 print("imports ok")
 print("  python", ".".join(map(str, __import__("sys").version_info[:3])))
 print("  numpy", numpy.__version__)
 print("  gensim", gensim.__version__)
 print("  torch", torch.__version__)
 print("  umap", umap.__version__)
+print("  streamlit", streamlit.__version__)
 PY
 
 echo

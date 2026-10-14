@@ -48,9 +48,9 @@ if not exist "%VENV_PY%" (
   exit /b 1
 )
 
-"%VENV_PY%" -c "import sys; raise SystemExit(0 if (3, 9) <= sys.version_info[:2] <= (3, 12) else 1)" >nul 2>&1
+"%VENV_PY%" -c "import sys; raise SystemExit(0 if (3, 9) <= sys.version_info[:2] <= (3, 15) else 1)" >nul 2>&1
 if errorlevel 1 (
-  echo ERROR: .venv Python is not 3.9-3.12. Delete .venv and run setup.bat
+  echo ERROR: .venv Python is not 3.9-3.15. Delete .venv and run setup.bat
   exit /b 1
 )
 
