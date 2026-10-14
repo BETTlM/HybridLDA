@@ -68,6 +68,14 @@ def load_docs(corpus: str) -> pd.DataFrame:
 
 
 @st.cache_data
+def load_syllabus(corpus: str) -> dict:
+    path = RESULTS_DIR / f"syllabus_{corpus}.json"
+    if path.exists():
+        return json.loads(path.read_text())
+    return {}
+
+
+@st.cache_data
 def load_temporal(corpus: str) -> pd.DataFrame:
     path = RESULTS_DIR / f"temporal_{corpus}.csv"
     if path.exists():
@@ -106,13 +114,14 @@ def main() -> None:
     trends = load_temporal(corpus)
     arrays = load_arrays(corpus)
 
-    tab_eval, tab_topics, tab_umap, tab_trend, tab_query = st.tabs(
+    tab_eval, tab_topics, tab_umap, tab_trend, tab_query, tab_syllabus = st.tabs(
         [
             "Coherence vs LDA",
             "Topic explorer",
             "UMAP clusters",
             "Temporal trends",
             "Related-work search",
+            "Syllabus Integration",
         ]
     )
 
@@ -261,6 +270,32 @@ def main() -> None:
                 )
                 st.markdown("**Probabilistic / embedding topic ranking**")
                 _table(rank_df)
+
+    with tab_syllabus:
+        st.subheader("Core Syllabus Integration (22AIE301)")
+        syllabus_data = load_syllabus(corpus)
+        if not syllabus_data:
+            st.info("No syllabus data found. Run the updated pipeline `python run_pipeline.py` to generate.")
+        else:
+            st.markdown("### 1. Bayesian Network Analysis")
+            if "bayesian_network" in syllabus_data:
+                st.json(syllabus_data["bayesian_network"], expanded=False)
+            
+            st.markdown("### 2. Hidden Markov Model (Temporal Dynamics)")
+            if "hmm" in syllabus_data:
+                st.json(syllabus_data["hmm"], expanded=False)
+                
+            st.markdown("### 3. Kalman Filter (Prevalence Smoothing)")
+            if "kalman" in syllabus_data:
+                st.json(syllabus_data["kalman"], expanded=False)
+                
+            st.markdown("### 4. Markov Random Field (Topic Co-occurrence)")
+            if "mrf" in syllabus_data:
+                st.json(syllabus_data["mrf"], expanded=False)
+                
+            st.markdown("### 5. Decision Network (Research Planning)")
+            if "decision_network" in syllabus_data:
+                st.json(syllabus_data["decision_network"], expanded=False)
 
 
 if __name__ == "__main__":

@@ -24,6 +24,7 @@ from src.evaluate import clustering_silhouette, summarize_topics, topic_coherenc
 from src.hybrid import build_hybrid_matrix, fit_cluster_topics, reduce_dimensions
 from src.lda_baseline import build_dictionary, fit_lda
 from src.preprocess import preprocess_frame
+from src.syllabus_analysis import run_syllabus_analysis
 from src.temporal import topic_prevalence_by_year
 from src.visualize import (
     plot_alpha_sweep,
@@ -221,6 +222,21 @@ def run_corpus(
         hybrid_labels=best_alpha_cluster.labels.astype(np.int16),
     )
 
+    # ── Syllabus-aligned probabilistic reasoning analyses ──────────────
+    logger.info("[%s] Running syllabus-aligned analyses (BN, HMM, Kalman, MRF, DN)…", corpus)
+    syllabus_out = run_syllabus_analysis(
+        texts=texts,
+        theta=lda.theta,
+        topic_words=lda.topic_words,
+        dictionary=dictionary,
+        n_topics=best_k,
+        corpus=corpus,
+        years=df.get("year"),
+        coherence_scores=topics_payload.get("lda_coherence"),
+        trend_df=trend_df,
+        seed=seed,
+    )
+
     return {
         "metrics": metrics,
         "silhouette": sil_df,
@@ -232,6 +248,7 @@ def run_corpus(
         "embeddings": embeddings,
         "best_k": best_k,
         "best_alpha": best_alpha,
+        "syllabus": syllabus_out,
     }
 
 

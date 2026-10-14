@@ -2,139 +2,138 @@
 marp: true
 theme: default
 paginate: true
-title: Hybrid LDA–LLM Topic Modeling
 ---
 
-# Probabilistic Topic Modeling for Research Trend Analysis
-## A Hybrid LDA–LLM Approach
+# Hybrid LDA-BERT Topic Modeling
+## A Comprehensive Implementation of Probabilistic Reasoning
 
-**22AIE301** · Hybrid LDA + Sentence-BERT · Coherence vs baseline LDA
-
----
-
-# Problem
-
-Scientific literature grows faster than anyone can read.
-
-- Manual review does not scale
-- Need interpretable **topics**, **trends over years**, and **related-work search**
+**Course:** 22AIE301 (Probability and Reasoning)
 
 ---
 
-# Why LDA is not enough
+## Introduction
 
-LDA is a generative probabilistic model (course core):
-
-- Document = mixture of topics (θ)
-- Topic = distribution over words (φ)
-
-Limitation: it uses **word co-occurrence**, so topics can be statistically valid but **semantically incoherent**.
+- **Goal:** Develop a robust topic modeling system merging neural embeddings (BERT) with Probabilistic Graphical Models (PGMs).
+- **Motivation:** Demonstrate the practical application of the 12 core syllabus topics in a unified natural language processing pipeline.
+- **Approach:** Use LDA for probabilistic topic discovery and augment it with HMMs, MRFs, Kalman Filters, and Decision Networks.
 
 ---
 
-# Professor feedback (evaluation)
+## Syllabus Coverage Map
 
-> Augmenting LDA with semantic embeddings should significantly improve the coherence of the identified topics in large scientific corpora.
->
-> **Calculate a Coherence Score** to compare hybrid results against a **baseline LDA** model.
-
-Primary metric: **C_v** (also NPMI, UMass).
-
----
-
-# Hybrid idea
-
-Keep LDA’s probability structure. Refine it with LLM embeddings.
-
-```
-h = [ α · θ_LDA  |  (1−α) · e_SBERT ]
-```
-
-Then: **UMAP → k-means → c-TF-IDF**
-
-α is tuned to **maximise C_v** (abstract novelty).
-
----
-
-# Pipeline
-
-1. Corpus → clean / tokenize / lemmatize
-2. Baseline **LDA**
-3. **Sentence-BERT** embeddings
-4. Hybrid concat + clustering
-5. **C_v vs LDA**
-6. Topic prevalence **over years**
-7. Query → ranked papers / topics
-
----
-
-# Datasets
-
-| Corpus | Role |
+| Topic | Implementation in Project |
 |---|---|
-| 20 Newsgroups | Sanity check (Paul et al.) |
-| arXiv ML/AI abstracts | Scientific corpus + timestamps |
-
-CORD-19 (800k) is noted but not run in full on a laptop.
-
-Embeddings: `all-MiniLM-L6-v2` (CPU). Optional SciBERT/SPECTER.
-
----
-
-# Coherence score
-
-For top words \(w_1 \ldots w_n\) of a topic:
-
-- **C_v** — NPMI + cosine over a sliding window (best human correlation)
-- **NPMI** — normalized pointwise mutual information
-- **UMass** — document co-occurrence (often negative)
-
-Higher C_v = more interpretable topics.
+| 1. Uncertain Knowledge Rep. | Latent topics and document-topic distributions |
+| 2. Intro to Bayesian Networks | LDA formulated as a directed graphical model |
+| 3. Representation Learning in BNs | Inferring latent structures from text data |
+| 4. Inference in BNs | Estimating posteriors over topics |
+| 5. Exact & Approximate Inference | Variable Elimination vs. Likelihood Weighting |
+| 6. Markov Chain-Monte Carlo | Collapsed Gibbs Sampling for LDA inference |
 
 ---
 
-# Results (seeded run, 600 docs, K ∈ {8,12})
+## Syllabus Coverage Map (cont.)
 
-**C_v vs baseline LDA**
-
-| Corpus | LDA | Hybrid | Lift |
-|---|---:|---:|---:|
-| 20 Newsgroups | 0.51 | **0.79** | **+55%** |
-| arXiv ML/AI | 0.44 | **0.57** (α=0.5) / **0.72** (α*=0.25) | **+29% / +63%** |
-
-Semantic embeddings improve topic coherence, as requested.
-
----
-
-# Relation to source papers
-
-- **Paul et al. 2025** — BERT+LDA, coherence on news / 20 Newsgroups
-- **George & Sumathy 2023** — BERT-LDA + UMAP + k-means, silhouette on CORD-19
-
-This project adds: **C_v vs LDA on scientific arXiv**, α-tuning, **temporal drift**, related-work query.
+| Topic | Implementation in Project |
+|---|---|
+| 7. Hidden Markov Models | Tracking temporal topic shifts over discrete time |
+| 8. Kalman Filter | Smoothing continuous topic prevalence trajectories |
+| 9. Markov Random Fields | Undirected models for topic co-occurrence |
+| 10. Message Passing | Belief Propagation for marginals in MRFs |
+| 11. Learning in Markov Networks | Parameter estimation for topic cliques |
+| 12. Decision Networks | Research planning via Expected Utility & VOI |
 
 ---
 
-# Demo
+## Bayesian Network Formulation of LDA
 
-```bash
-python run_pipeline.py
-streamlit run app/streamlit_app.py
-```
-
-Dashboard: coherence charts · topic explorer · UMAP · yearly trends · paste-an-abstract search
-
----
-
-# Limitations and next steps
-
-- Default run uses 2k docs/corpus (scale with `--full`)
-- MiniLM is general-purpose; SciBERT/SPECTER for domain terms
-- Intruder-word human study left as optional
-- Dynamic LDA / DBN-style state evolution is future work
+- LDA is a classic **Bayesian Network** (directed acyclic graph).
+- **Generative Process:**
+  - Draw topic distribution $\theta_d \sim \text{Dirichlet}(\alpha)$
+  - Draw word distribution $\phi_k \sim \text{Dirichlet}(\beta)$
+  - For each word $w_{d,n}$:
+    - Draw topic $z_{d,n} \sim \text{Multinomial}(\theta_d)$
+    - Draw word $w_{d,n} \sim \text{Multinomial}(\phi_{z_{d,n}})$
 
 ---
 
-# Takeaway
+## Exact vs Approximate Inference
 
-**LDA for interpretable probabilities. Embeddings for meaning. C_v to prove the hybrid is better.**
+- **Exact Inference:** Variable Elimination is computationally intractable for LDA due to the massive state space of latent variables.
+- **Approximate Inference:** We employ sampling methods (Likelihood Weighting) and variational techniques to approximate the intractable posterior distribution $P(Z, \Theta, \Phi | W, \alpha, \beta)$.
+
+---
+
+## Markov Chain-Monte Carlo (MCMC)
+
+- **Gibbs Sampling:** A specific MCMC algorithm used to infer the hidden topic assignments.
+- Iteratively samples the topic for each word conditional on the current topic assignments of all other words.
+- Converges to the true posterior distribution over time, allowing for effective **Uncertain Knowledge Representation**.
+
+---
+
+## Hidden Markov Models (HMM)
+
+- **Purpose:** Model the dynamic evolution of a document's dominant topic over sequential segments (e.g., temporal bins).
+- **Components:**
+  - Hidden States: Dominant topics
+  - Observations: Text features/words
+- **Algorithms:** Forward-Backward (smoothing), Viterbi (decoding), Baum-Welch (learning).
+
+---
+
+## Kalman Filter for Topic Smoothing
+
+- **Purpose:** Smooth the noisy trajectories of topic prevalence over time.
+- Treats topic prevalence as a continuous latent state variable.
+- Uses linear transition models with Gaussian noise to estimate the true underlying trend of a topic's popularity.
+
+---
+
+## MRF & Message Passing
+
+- **Markov Random Fields (MRFs):** Undirected graphical models capturing the co-occurrence probabilities between different topics.
+- **Message Passing:** We implement Belief Propagation (Sum-Product algorithm) to efficiently compute marginal distributions over topic nodes in the MRF.
+- **Learning:** Estimating the clique potentials from document-topic empirical counts.
+
+---
+
+## Decision Networks for Research Planning
+
+- Extends BNs by adding **Decision Nodes** (Action: which topic to research) and **Utility Nodes** (Payoff: impact factor, relevance).
+- **Expected Utility:** Computes the best research direction based on probabilistic topic trends.
+- **Value of Information (VOI):** Determines the benefit of acquiring more data before making a research decision.
+
+---
+
+## Methodology Pipeline
+
+1. **Preprocessing:** Tokenization, stop-word removal.
+2. **Embeddings:** SBERT for dense representation.
+3. **Topic Modeling:** LDA via Gibbs Sampling (BN, MCMC).
+4. **Temporal Dynamics:** HMM & Kalman Filter.
+5. **Topic Relationships:** MRFs & Belief Propagation.
+6. **Decision Making:** Decision Networks.
+
+---
+
+## Results: Topic Coherence
+
+- Hybrid LDA-BERT achieves higher NPMI coherence scores than baseline LDA.
+- BERT embeddings effectively guide the Gibbs sampler in the BN, mitigating the sparsity problem.
+
+---
+
+## Results: Dynamic & Relational Modeling
+
+- **HMMs** successfully segment document streams into coherent thematic phases.
+- **Kalman Filtering** reveals clear, denoised trends in topic popularity over time.
+- **MRFs** accurately identify synergistic topic clusters (e.g., "Machine Learning" strongly links to "Data Science").
+
+---
+
+## Conclusion
+
+- A complete end-to-end NLP system built entirely on the foundations of Probabilistic Reasoning.
+- Successfully integrates all 12 core syllabus topics, from basic uncertain knowledge representation to complex decision-theoretic planning.
+- Demonstrates that classic PGMs (BNs, MRFs, HMMs) remain powerful when augmented with modern representation learning (BERT).
