@@ -1,10 +1,25 @@
 #!/usr/bin/env bash
 # Create a local virtualenv and install dependencies (macOS / Linux).
-# Supports Python 3.9–3.15.
+# Supports Python 3.9–3.15. Uses binary wheels for compiled packages.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 cd "$ROOT"
+
+ONLY_BIN="numpy,pandas,scipy,scikit-learn,numba,llvmlite,pyarrow,pillow,matplotlib,torch,PyYAML"
+
+wheel_fail() {
+  echo
+  echo "=========================================================================="
+  echo "  pip could not find a BINARY wheel (no compiler / Visual Studio needed)."
+  echo "=========================================================================="
+  echo
+  echo "A package likely has no wheel for this Python yet."
+  echo "Recommended fix: use Python 3.12, then:"
+  echo "  rm -rf .venv && ./setup.sh"
+  echo
+  exit 1
+}
 
 pick_python() {
   local cand
@@ -36,7 +51,7 @@ pick_python() {
 
 if ! PY="$(pick_python)"; then
   echo "Python 3.9–3.15 is required." >&2
-  echo "On macOS:  brew install python@3.15   # or python@3.12" >&2
+  echo "On macOS:  brew install python@3.12   # or python@3.15" >&2
   echo "Or install from https://www.python.org/downloads/" >&2
   exit 1
 fi
@@ -67,16 +82,24 @@ mkdir -p "$NLTK_DATA" "$NUMBA_CACHE_DIR" "$MPLCONFIGDIR" "$HF_HOME" "$ROOT/resul
 echo "Upgrading pip / setuptools / wheel ..."
 "$VENV_PY" -m pip install --upgrade pip setuptools wheel
 
-# PyTorch cp315 wheels are on download.pytorch.org, not PyPI.
 PY_MINOR="$("$VENV_PY" -c 'import sys; print(sys.version_info.minor)')"
+
+# PyTorch cp315 wheels are on download.pytorch.org, not PyPI.
 if [ "$PY_MINOR" -ge 15 ]; then
   echo "Python 3.${PY_MINOR}: installing torch from download.pytorch.org ..."
-  "$VENV_PY" -m pip install --prefer-binary "torch>=2.2.0,<3" \
-    --index-url https://download.pytorch.org/whl/cpu
+  "$VENV_PY" -m pip install --only-binary=:all: "torch>=2.2.0,<3" \
+    --index-url https://download.pytorch.org/whl/cpu || wheel_fail
+
+  echo "Python 3.${PY_MINOR}: requiring packages with cp315 wheels ..."
+  "$VENV_PY" -m pip install --only-binary="$ONLY_BIN" \
+    "numpy>=2.5.0" "pandas>=3.0.6" "scipy>=1.18.0" "scikit-learn>=1.9.0" \
+    "pyarrow>=26.0.0" "pillow>=12.0.0" "numba>=0.68.0" "llvmlite>=0.50.0" \
+    "matplotlib>=3.10.0" || wheel_fail
 fi
 
 echo "Installing packages from requirements.txt ..."
-"$VENV_PY" -m pip install --prefer-binary -r "$ROOT/requirements.txt"
+"$VENV_PY" -m pip install --prefer-binary --only-binary="$ONLY_BIN" \
+  -r "$ROOT/requirements.txt" || wheel_fail
 
 echo "Downloading NLTK data ..."
 "$VENV_PY" - <<'PY'
@@ -108,7 +131,7 @@ import streamlit
 print("imports ok")
 print("  python", ".".join(map(str, __import__("sys").version_info[:3])))
 print("  numpy", numpy.__version__)
-print("  gensim", gensim.__version__)
+print("  pandas", pandas.__version__)
 print("  torch", torch.__version__)
 print("  umap", umap.__version__)
 print("  streamlit", streamlit.__version__)
@@ -116,15 +139,7 @@ PY
 
 echo
 echo "Setup finished."
-echo "Activate THIS venv (not a conda env named Kaushik):"
 echo
 echo "  source .venv/bin/activate"
 echo "  python run_pipeline.py --smoke"
-echo
-echo "Full experiment:"
-echo "  python run_pipeline.py"
-echo
-echo "Optional:"
-echo "  python run_pipeline.py --full"
-echo "  python run_dashboard.py"
 echo

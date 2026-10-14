@@ -1,14 +1,13 @@
 @echo off
 REM =============================================================================
 REM setup.bat — Create .venv, install deps, download NLTK data (Windows)
-REM Supports Python 3.9–3.15.
+REM Supports Python 3.9–3.15. Uses binary wheels only for compiled packages
+REM (avoids Visual Studio / meson source builds).
 REM
 REM Usage:
 REM   setup.bat
 REM Then:
-REM   run.bat              (default experiment + dashboard)
-REM   run.bat --smoke      (quick install check)
-REM   run.bat --full       (large experiment)
+REM   run.bat --smoke
 REM =============================================================================
 setlocal EnableExtensions EnableDelayedExpansion
 
@@ -44,7 +43,6 @@ if "!PY!"=="" (
 if "!PY!"=="" (
   echo.
   echo Python 3.9-3.15 is required.
-  echo.
   echo Install from https://www.python.org/downloads/
   echo Tick "Add python.exe to PATH" during setup, then re-run setup.bat
   echo.
@@ -84,7 +82,7 @@ if not exist "%VENV_PY%" (
   exit /b 1
 )
 
-REM ---- Cache / data dirs (writable without admin) ----------------------------
+REM ---- Cache / data dirs -----------------------------------------------------
 set "NLTK_DATA=%CD%\data\nltk_data"
 set "NUMBA_CACHE_DIR=%CD%\data\cache\numba"
 set "MPLCONFIGDIR=%CD%\data\cache\matplotlib"
@@ -100,46 +98,54 @@ if not exist "%HF_HOME%" mkdir "%HF_HOME%"
 if not exist "%CD%\results" mkdir "%CD%\results"
 if not exist "%CD%\results\figures" mkdir "%CD%\results\figures"
 
-REM ---- Install packages ------------------------------------------------------
+REM Packages that must never be compiled from source on Windows
+set "ONLY_BIN=numpy,pandas,scipy,scikit-learn,numba,llvmlite,pyarrow,pillow,matplotlib,torch,PyYAML"
+
 echo.
 echo Upgrading pip / setuptools / wheel ...
 "%VENV_PY%" -m pip install --upgrade pip setuptools wheel
 if errorlevel 1 exit /b 1
 
-REM PyTorch cp315 wheels are on download.pytorch.org, not PyPI.
 for /f "delims=" %%M in ('"%VENV_PY%" -c "import sys; print(sys.version_info.minor)"') do set "PY_MINOR=%%M"
+for /f "delims=" %%M in ('"%VENV_PY%" -c "import sys; print(sys.version_info[0])"') do set "PY_MAJOR=%%M"
+
+REM PyTorch cp315 wheels are on download.pytorch.org, not PyPI.
 if !PY_MINOR! GEQ 15 (
   echo.
   echo Python 3.!PY_MINOR!: installing torch from download.pytorch.org ...
-  "%VENV_PY%" -m pip install --prefer-binary "torch>=2.2.0,<3" --index-url https://download.pytorch.org/whl/cpu
+  "%VENV_PY%" -m pip install --only-binary=:all: "torch>=2.2.0,<3" --index-url https://download.pytorch.org/whl/cpu
   if errorlevel 1 (
-    echo torch install from download.pytorch.org failed.
+    echo.
+    echo torch has no binary wheel for this Python on Windows.
+    echo Install Python 3.12 from https://www.python.org/downloads/
+    echo then:  rmdir /s /q .venv ^& setup.bat
     exit /b 1
   )
 )
 
-echo.
-echo Installing packages from requirements.txt ...
-"%VENV_PY%" -m pip install --prefer-binary -r "%CD%\requirements.txt"
-if errorlevel 1 (
+REM On 3.15, bump floors so pip resolves packages that publish cp315 wheels.
+set "EXTRA_PINS="
+if !PY_MINOR! GEQ 15 (
+  set "EXTRA_PINS=numpy>=2.5.0 pandas>=3.0.6 scipy>=1.18.0 scikit-learn>=1.9.0 pyarrow>=26.0.0 pillow>=12.0.0 numba>=0.68.0 llvmlite>=0.50.0 matplotlib>=3.10.0"
   echo.
-  echo pip install failed. Common fixes:
-  echo   - Use Python 3.9-3.15
-  echo   - Check network / proxy settings
-  echo   - Delete .venv and re-run setup.bat
-  exit /b 1
+  echo Python 3.!PY_MINOR!: requiring packages with cp315 wheels ...
+  "%VENV_PY%" -m pip install --only-binary=%ONLY_BIN% !EXTRA_PINS!
+  if errorlevel 1 goto :wheel_fail
 )
 
-REM ---- NLTK corpora ----------------------------------------------------------
+echo.
+echo Installing packages from requirements.txt ^(binary wheels only for compiled deps^) ...
+"%VENV_PY%" -m pip install --prefer-binary --only-binary=%ONLY_BIN% -r "%CD%\requirements.txt"
+if errorlevel 1 goto :wheel_fail
+
 echo.
 echo Downloading NLTK data ...
 "%VENV_PY%" -c "import os,nltk; from pathlib import Path; d=Path('data/nltk_data'); d.mkdir(parents=True, exist_ok=True); os.environ['NLTK_DATA']=str(d.resolve()); pkgs=('punkt','punkt_tab','stopwords','wordnet','omw-1.4'); [print('  nltk:',p) or nltk.download(p, download_dir=str(d), quiet=True) for p in pkgs]"
 if errorlevel 1 exit /b 1
 
-REM ---- Import smoke check ----------------------------------------------------
 echo.
 echo Checking imports ...
-"%VENV_PY%" -c "import sys; from pathlib import Path; sys.path.insert(0, str(Path('.').resolve())); from src.quiet import configure_warnings; configure_warnings(); import numpy,pandas,sklearn,scipy,gensim,nltk,torch,umap,matplotlib,streamlit,plotly; from sentence_transformers import SentenceTransformer; print('imports ok'); print('  python', '.'.join(map(str, sys.version_info[:3]))); print('  numpy', numpy.__version__); print('  gensim', gensim.__version__); print('  torch', torch.__version__); print('  streamlit', streamlit.__version__)"
+"%VENV_PY%" -c "import sys; from pathlib import Path; sys.path.insert(0, str(Path('.').resolve())); from src.quiet import configure_warnings; configure_warnings(); import numpy,pandas,sklearn,scipy,gensim,nltk,torch,umap,matplotlib,streamlit,plotly; from sentence_transformers import SentenceTransformer; print('imports ok'); print('  python', '.'.join(map(str, sys.version_info[:3]))); print('  numpy', numpy.__version__); print('  pandas', pandas.__version__); print('  torch', torch.__version__); print('  streamlit', streamlit.__version__)"
 if errorlevel 1 (
   echo Import check failed. Delete .venv and re-run setup.bat
   exit /b 1
@@ -156,9 +162,25 @@ echo   run.bat --smoke      - tiny install check ^(150 docs^)
 echo   run.bat --full       - large experiment ^(8k docs^)
 echo   run.bat --dashboard  - dashboard only ^(skip pipeline^)
 echo.
-echo Or activate manually:
-echo   .venv\Scripts\activate
-echo   python run_pipeline.py --smoke
-echo.
 endlocal
 exit /b 0
+
+:wheel_fail
+echo.
+echo ==========================================================
+echo   pip could not find a BINARY wheel ^(no compiler needed^).
+echo ==========================================================
+echo.
+echo This usually means a package has no wheel for your Python yet.
+echo Do NOT install Visual Studio to fix this — use a Python with wheels.
+echo.
+echo Fix ^(recommended^):
+echo   1. Install Python 3.12 from https://www.python.org/downloads/
+echo   2. In this folder run:
+echo        rmdir /s /q .venv
+echo        setup.bat
+echo.
+echo Or stay on 3.15 only if every package publishes cp315 wheels.
+echo.
+endlocal
+exit /b 1

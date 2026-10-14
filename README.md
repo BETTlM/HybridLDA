@@ -35,7 +35,9 @@ Augment LDA with Sentence-BERT embeddings, then **quantitatively compare topic c
 
 ## Setup
 
-Needs **Python 3.9–3.15**. Prefer `./setup.sh` or `setup.bat` over a bare `pip install` — on 3.15 they pull PyTorch from `download.pytorch.org` (those wheels are not on PyPI).
+Needs **Python 3.9–3.15**. Prefer `./setup.sh` or `setup.bat` over a bare `pip install` — they install **binary wheels only** for compiled packages (no Visual Studio) and, on 3.15, pull PyTorch from `download.pytorch.org`.
+
+If setup fails looking for `vswhere.exe` / Visual Studio, delete `.venv` and re-run the updated `setup.bat` (that error meant pip tried to compile pandas; the script now pulls `pandas>=3.0.6` wheels instead). Python **3.12** is the most reliable fallback if any package still lacks a 3.15 wheel.
 
 **macOS / Linux**
 
